@@ -22,4 +22,9 @@ export class CalDAVClient {
 		if (!this.client) throw new Error('Not connected');
 		return await this.client.fetchCalendars();
 	}
+
+	async fetchCalendarObjects(calendar: DAVCalendar): Promise<DAVCalendarObject[]> {
+		if (!this.client) throw new Error('Not connected');
+		return await this.client.fetchCalendarObjects({ calendar });
+	}
 }

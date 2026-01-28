@@ -10,7 +10,7 @@ export const GET: RequestHandler = async () => {
 
 		return json(calendars);
 	} catch (error) {
-		console.error('CalDAV error:', error);
+		console.error('Fetch calendars error:', error);
 		return json(
 			{ error: 'Failed to fetch calendars' },
 			{ status: 500 }
