@@ -26,15 +26,14 @@ export const GET: RequestHandler = async ({ url }) => {
 			);
 		}
 
-		const calendarObjects = await client.fetchCalendarObjects(calendar);
+		const events = await client.fetchEvents(calendar);
 
-		return json(calendarObjects);
+		return json(events);
 	} catch (error) {
 		console.error('Fetch events error:', error);
 		return json(
 			{ error: 'Failed to fetch events', details: error instanceof Error ? error.message : 'Unknown' },
 			{ status: 500 }
 		);
-
 	}
 }

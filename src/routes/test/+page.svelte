@@ -110,15 +110,46 @@
 	{#if events.length > 0}
 		<div class="mt-4">
 			<h2 class="mb-2 text-xl font-bold">Events Found:</h2>
-			<ul class="space-y-2">
+			<ul class="space-y-3">
 				{#each events as event}
-					<li class="rounded border p-3">
-						<p class="font-medium">URL: {event.url}</p>
+					<li class="rounded border bg-white p-4 shadow-sm">
+						<h3 class="text-lg font-bold">{event.summary}</h3>
+
+						<div class="mt-2 space-y-1 text-sm">
+							<p>
+								<span class="font-medium">Start:</span>
+								{event.start.toLocaleString()}
+								{#if event.isAllDay}
+									<span class="text-blue-600">(All day)</span>
+								{/if}
+							</p>
+							<p>
+								<span class="font-medium">End:</span>
+								{event.end.toLocaleString()}
+							</p>
+
+							{#if event.location}
+								<p>
+									<span class="font-medium">Location:</span>
+									{event.location}
+								</p>
+							{/if}
+
+							{#if event.description}
+								<p>
+									<span class="font-medium">Description:</span>
+									{@html event.description}
+								</p>
+							{/if}
+						</div>
+
 						<details class="mt-2">
-							<summary class="cursor-pointer text-sm text-blue-600"> Show raw data </summary>
+							<summary class="cursor-pointer text-xs text-gray-500"> Technical details </summary>
 							<pre class="mt-2 overflow-x-auto rounded bg-gray-100 p-2 text-xs">
-								{JSON.stringify(event, null, 2)}
-							</pre>
+UID: {event.uid}
+URL: {event.url}
+ETag: {event.etag}
+                			</pre>
 						</details>
 					</li>
 				{/each}

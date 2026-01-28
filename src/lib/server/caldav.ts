@@ -1,5 +1,7 @@
 import { DAVClient, type DAVCalendar, type DAVCalendarObject } from "tsdav";
 import { CALDAV_SERVER_URL, CALDAV_USERNAME, CALDAV_PASSWORD } from "$env/static/private";
+import { parseICalendarEvent } from "./parser";
+import type { ParsedEvent } from "$lib/types";
 
 export class CalDAVClient {
 	private client: DAVClient | null = null;
@@ -26,5 +28,18 @@ export class CalDAVClient {
 	async fetchCalendarObjects(calendar: DAVCalendar): Promise<DAVCalendarObject[]> {
 		if (!this.client) throw new Error('Not connected');
 		return await this.client.fetchCalendarObjects({ calendar });
+	}
+
+	async fetchEvents(calendar: DAVCalendar): Promise<ParsedEvent[]> {
+		const calendarObjects = await this.fetchCalendarObjects(calendar);
+
+		const parsedEvents: ParsedEvent[] = [];
+
+		for (const object of calendarObjects) {
+			const parsedEvent = parseICalendarEvent(object.data, object.url, object.etag || '');
+			parsedEvents.push(...parsedEvent);
+		}
+
+		return parsedEvents;
 	}
 }
